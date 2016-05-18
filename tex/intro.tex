@@ -4,163 +4,25 @@
 %%==================================================
 
 %\bibliographystyle{sjtu2}%[此处用于每章都生产参考文献]
-\chapter{这是什么}
+\chapter{绪论}
 \label{chap:intro}
+	一直以来，情绪都被认为是高级生命体独有的特征。而它是极其复杂的心理现象，是一种多成分、多维度、多种类组合的心理过程。每个人的情绪不但与自己的认知息息相关，每种情绪还可以相互组合从而派生出更复杂而高级的情绪。心理现象是脑的功能，所以大脑是产生不同情绪的根源所在，所以基于脑电信号的情绪识别方法无疑最可能成为有最高准确率的方法之一。因此，建立一套准确，方便同时广泛适用的模型对于情绪的研究来说意义重大。此时，基于脑电信号分析的算法可以发挥效用。
 
-这是上海交通大学(非官方)学位论文 \LaTeX 模板，当前版本是 \version 。
 
-最早的一版学位模板是一位热心的物理系同学制作的。
-那份模板参考了自动化所学位论文模板，使用了CASthesis.cls文档类，中文字符处理则采用当时最为流行的 \CJKLaTeX 方案。
-我根据交大研究生院对学位论文的要求
-\footnote{\url{http://www.gs.sjtu.edu.cn/policy/fileShow.ahtml?id=130}}
-，结合少量个人审美喜好，完成了一份基本可用的交大 \LaTeX 学位论文模板。
-但是，搭建一个 \CJKLaTeX 环境并不简单，单单在Linux下配置环境和添加中文字体，就足够让新手打退堂鼓。
-在William Wang的建议下，我开始着手把模板向 \XeTeX 引擎移植。
-他完成了最初的移植，多亏了他出色的工作，后续的改善工作也得以顺利进行。
+\section{研究背景与意义}
 
-随着我对 \LaTeX 系统认知增加，我又断断续续做了一些完善模板的工作，在原有硕士学位论文模板的基础上完成了交大学士和博士学位论文模板。
-
-现在，交大学位论文模板SJTUTHesis代码在github
-\footnote{\url{https://github.com/weijianwen/SJTUThesis}}
-上维护。
-你可以\href{https://github.com/weijianwen/SJTUThesis/issues}{在github上开issue}
-、或者在\href{https://bbs.sjtu.edu.cn/bbsdoc?board=TeX_LaTeX}{水源LaTeX版}发帖来反映遇到的问题。
-
-\section{使用模板}
-
-\subsection{准备工作}
-\label{sec:requirements}
-
-要使用这个模板撰写学位论文，需要在\emph{TeX系统}、\emph{中英文字体}、\emph{TeX技能}上有所准备。
-
-\begin{itemize}[noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt]
-	\item {\TeX}系统：所使用的{\TeX}系统要支持 \XeTeX 引擎，且带有ctex 2.x宏包，以2015年的\emph{完整}TeXLive、MacTeX发行版为佳。
-	\item 中英文字体：操作系统中需要安装\footnote{在Windows、Mac OS X 以及 Linux 上安装额外的字体，可以参考\href{https://www.searchfreefonts.com/articles/how-to-install-fonts.htm}{“How to install fonts?”}。
-}TeX Gyre Termes字体\footnote{\url{http://www.gust.org.pl/projects/e-foundry/tex-gyre/termes}}和四款Adobe中文字体
-\footnote{请从合法渠道获得Adobe字体。}：AdobeSongStd、AdobeKaitiStd、AdobeHeitiStd、AdobeFangsongStd。
-	\item TeX技能：尽管提供了对模板的必要说明，但这不是一份“ \LaTeX 入门文档”。在使用前请先通读其他入门文档。
-	\item 针对Windows用户的额外需求：学位论文模本分别使用git和GNUMake进行版本控制和构建，建议从Cygwin\footnote{\url{http://cygwin.com}}安装这两个工具。
-\end{itemize}
-
-\subsection{模板选项}
-\label{sec:thesisoption}
-
-sjtuthesis提供了一些常用选项，在thesis.tex在导入sjtuthesis模板类时，可以组合使用。
-这些选项包括：
-
-\begin{itemize}[noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt]
-\item 学位类型：bachelor(学位)、master(硕士)、doctor(博士)，是必选项。
-\item 中国字体：adobefonts(Adobe中文字体)、winfonts(使用Windows下的中文字体，该选项未在Linux/Mac下测试)。
-\item 正文字号：cs4size(小四)、c5size(五号)。
-\item 盲审选项：使用review选项后，论文作者、学号、导师姓名、致谢、发表论文和参与项目将被隐去。
-\end{itemize}
-
-\subsection{编译模板}
-\label{sec:process}
-
-模板默认使用GNUMake构建，GNUMake将调用latemk工具自动完成模板多轮编译：
-
-\begin{lstlisting}[basicstyle=\small\ttfamily, caption={编译模板}, numbers=none]
-make clean thesis.pdf
-\end{lstlisting}
-
-若需要生成包含“原创性声明扫描件”的学位论文文档，请将扫描件保存为statement.pdf，然后调用make生成submit.pdf。
-在此过程中，stapler工具将被用于合并PDF文件。\emph{使用前请在Makefile中调整stapler合并的页码范围。}
-
-\begin{lstlisting}[basicstyle=\small\ttfamily, caption={生成用于提交的学位论文}, numbers=none]
-make clean submit.pdf
-\end{lstlisting}
-
-编译失败时，可以尝试手动逐次编译，定位故障。
-
-\begin{lstlisting}[basicstyle=\small\ttfamily, caption={手动逐次编译}, numbers=none]
-xelatex thesis
-bibtex thesis
-xelatex thesis
-xelatex thesis
-\end{lstlisting}
-
-\subsection{模板文件布局}
-\label{sec:layout}
-
-\begin{lstlisting}[basicstyle=\small\ttfamily,caption={模板文件布局},label=layout,float,numbers=none]
-├── LICENSE
-├── Makefile
-├── README.md
-├── bib
-│   ├── chap1.bib
-│   └── chap2.bib
-├── bst
-│   └── GBT7714-2005NLang.bst
-├── figure
-│   ├── chap2
-│   │   ├── sjtulogo.eps
-│   │   ├── sjtulogo.jpg
-│   │   ├── sjtulogo.pdf
-│   │   └── sjtulogo.png
-│   └── sjtubanner.png
-├── sjtuthesis.cfg
-├── sjtuthesis.cls
-├── statement.pdf
-├── submit.pdf
-├── tex
-│   ├── abstract.tex
-│   ├── ack.tex
-│   ├── app_cjk.tex
-│   ├── app_eq.tex
-│   ├── app_log.tex
-│   ├── chapter01.tex
-│   ├── chapter02.tex
-│   ├── chapter03.tex
-│   ├── conclusion.tex
-│   ├── id.tex
-│   ├── patents.tex
-│   ├── projects.tex
-│   ├── pub.tex
-│   └── symbol.tex
-└── thesis.tex
-\end{lstlisting}
-
-本节介绍学位论文模板中木要文件和目录的功能。
-
-\subsubsection{格式控制文件}
-\label{sec:format}
-
-格式控制文件控制着论文的表现形式，包括以下几个文件：
-sjtuthesis.cfg, sjtuthesis.cls和GBT7714-2005NLang.bst。
-其中，“cfg”和“cls”控制论文主体格式，“bst”控制参考文献条目的格式，
-
-\subsubsection{主控文件thesis.tex}
-\label{sec:thesistex}
-
-主控文件thesis.tex的作用就是将你分散在多个文件中的内容“整合”成一篇完整的论文。
-使用这个模板撰写学位论文时，你的学位论文内容和素材会被“拆散”到各个文件中：
-譬如各章正文、各个附录、各章参考文献等等。
-在thesis.tex中通过“include”命令将论文的各个部分包含进来，从而形成一篇结构完成的论文。
-对模板定制时引入的宏包，建议放在导言区。
-
-\subsubsection{各章源文件tex}
-\label{sec:thesisbody}
-
-这一部分是论文的主体，是以“章”为单位划分的，包括：
-
-\begin{itemize}[noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt]
-	\item 中英文摘要(abstract.tex)。前言(frontmatter)的其他部分，中英文封面、原创性声明、授权信息在sjtuthesis.cls中定义，不单独分离为tex文件。
-不单独弄成文件。
-	\item 正文(mainmatter)——学位论文正文的各章内容，源文件是chapter\emph{xxx}.tex。
-	\item 附录(app\emph{xx}.tex)、致谢(thuanks.tex)、攻读学位论文期间发表的学术论文目录(pub.tex)、个人简历(resume.tex)组成正文后的部分(backmatter)。
-参考文献列表由bibtex插入，不作为一个单独的文件。
-\end{itemize}
-
-\subsubsection{图片文件夹figure}
-\label{sec:fig}
-
-figure文件夹放置了需要插入文档中的图片文件(支持PNG/JPG/PDF/EPS格式的图片)，可以在按照章节划分子目录。
-模板文件中使用\verb|\graphicspath|命令定义了图片存储的顶层目录，在插入图片时，顶层目录名“figure”可省略。
-
-\subsubsection{参考文献数据库bib}
-\label{sec:bib}
-
-目前参考文件数据库目录只存放一个参考文件数据库thesis.bib。
-关于参考文献引用，可参考第\ref{chap:example}章中的例子。
-
+	每个人无时无刻都不在产生情绪，情绪在日常生活中时刻都在陪伴着我们，它不但影响着我们的一举一动，还会对我们的健康产生积极或者消极的影响。积极的情绪可以带给人民愉悦感，获得好的心情并且提高工作效率。并且有科学证据表明，愉快喜悦等积极情绪还可以使得伤口加快愈合，促进疾病痊愈。与此相反，消极的情绪会阻碍人们的个性发展，降低人们的自信和自我评价，还会影响人们的认知思维水平，妨碍日常生活。长期生活在抑郁、忧郁或恐惧下的人或性格古怪，社交能力较差，从而影响他们的生活质量。
+	情绪可以有多种方式被表达，譬如语言文字，肢体语言，面部表情等等。但是与脑电图(Electroencephalograph, 简称:EEG)信号相比，提供的数据有特征不突出，没有明显的模式的特点，加大了我们使用这些数据的难度，所以利用EEG信号来识别情绪可以获得比较好的准确率。而这项研究也成为当今EEG领域的热点之一。
+	EEG 信号是由电极采集在人体脑部自身产生的微弱生物电，然后在头皮处经放大后而得到数据。 这种信号最初是用于癫痫、脑血管疾病的检查,而现在由于它的时效性和前文所述的多种优点, 已经在多个领域被广泛利用，包括情绪识别，医疗，虚拟现实等等。而利用脑电信号来进行情绪识别的最大优点就是可以在保持识别过程的迅速的基础上，有更好的准确率，为进一步的各个细分领域的研究打下了坚实的基础。举例来说，譬如帮助抑郁症患者或者受到重大精神打击的人进行情绪分析，从而让医生了解病人真正的情绪，提供更好的治疗方案。或者对正在执行任务的警察保持情绪的观察，如果出现不正常的愤怒等情绪可以利用合适的方法来提醒。或者在远程教育方面,实时地情绪识别可以帮助老师快速地了解学生们的情绪状态,并以此为依据来在课上调整授课内容与方式, 保证教学的质量和灵活性。
+	与此同时，随着机器的计算能力的提高，深度学习的方法例如深度置信网络，深度自编码器等受到研究人员的青睐。但是如果只是用单一模态的输入进行学习，由于数据的分布总是相似的，所以提供的信息和学习能力都是很有限的。相反，不同模态譬如声音，文字，图像，脑电，眼动轨迹带有不同信息，所以提供的数据分布各不相同，他们各自提供的信息不但有交集，还互相补充。因此，如果能够利用多模态输入信号的融合，我们不仅可以提取出多模态共有的特征表达，从而找出它们代表的现实世界中的意义，还可以利用多个模态不同信号的互补信息来提高情绪识别任务的准确率。
+	所以，本课题的目标在于把眼动轨迹和EEG信号进行融合，找到合适且快速的融合方法，从而利用多模态的信息来进行情绪识别，这样就可以利用眼动轨迹和EEG信号所能提供的互补信息来获得比只是利用单一模态信息更好的表现。
+	
+\section{国内外研究现状}
+	 N Srivastava［1］利用多模态Deep Boltzmann Machines(DBM),作为模型，对图像和文字进行了多模态深度学习。获得了比深度自编码器和多模态DBN更好的结果。 利用多模态DBM学习得共同特征作为输入也在单模态学习中超过了原始的文字模态作为输入。	Ngiam et al. [2] 用深度自编码器进行了语音和视频的多模态深度学习。他们分别利用了只有声音一个模态和声音和视频两个模态作为输入，利用RBM重建声音和视频两个模态的特征并寻找共同表达。最终结论为，用声音一个模态作为输入，而两个RBM分别重建声音和视频的特征寻找到的共同特征表达有最好的结果。	Xing et al. [3] 用dual-wing harmoniums的模型进行了文字和图像的多模态深度学习，他们使用了包含高斯隐含单元，高斯和泊松可见单元的线性RBM模型，最终结果明显好Gaussian-multinomial mixture 和 Gaussian-multinomial mixture LDA.
+	 
+	 
+\section{工作介绍}
+	本课题将着重研究如何将实验室获得的眼动仪数据和EEG信号相融合，使得利用两个模态作为输入信息的算法模型有相比于单纯利用EEG信号或者眼动仪数据的算法有更好的表现。目前国内外对语基于脑电信号的情绪研究和多模态学习分别都有深入的研究，但是将多模态学习利用在情绪识别，特别是在EEG信号的利用上还远远不足。
+	我们通过对脑电信号和眼动仪信号的分析，对十一个被试人，每个人三组共三十三组的数据进行处理。结合多模态学习在其他领域的方法，提出了我们的多模态深度学习的算法模型，并且最终使得情绪识别的准确率有所提升。
+\section{本章小结}
+	本章主要介绍了基于多模态深度学习的情绪识别研究的目的和意义,以及多模态学习,脑电 情绪研究在国内外的研究现状。
