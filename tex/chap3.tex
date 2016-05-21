@@ -1,6 +1,6 @@
 %# -*- coding: utf-8-unix -*-
 %%==================================================
-%% chapter02.tex for SJTU Master Thesis
+%% chapter03.tex for SJTU Master Thesis
 %%==================================================
 
 %\bibliographystyle{sjtu2}%[此处用于每章都生产参考文献]
@@ -75,4 +75,61 @@
 	\begin{align}
 	h_i(X) = log P_i
 	\end{align}
+	
+	\section{特征平滑}
+	经过上述预处理，此时的EEG信号已经排除了大部分噪声。可是正如本章开头所说，EEG信号除了包含与情绪相关的信息以外还包含很多其他活动带来的噪声，譬如肌肉的运动。所以，本文合理的假设人的情绪变化不会出现剧烈的波动，所有剧烈的变化都被认为是非情绪相关活动产生的噪声。下一步进行特征平滑，去除这个噪声，拿到更纯净的代表情绪活动的EEG数据。本文采取了滑动平均平滑方法喝线性动力系统平滑两种方法。
+	\subsection{滑动平均平滑}
+	以下是滑动平滑平均的基本假设：原始信号的离散序列不但包含了情绪相关的信号$x_n$，还包含了噪声信号$e_n$,可以用下式表示：
+	\begin{align}
+	y_n = x_n + e_n
+	\end{align}
+	根据我们的实验目的，我们应该尽力消除噪声信号，得到纯净的情绪相关的信号。滑动平滑平均是在一定的窗口时间区间内做平均。滑动平滑平均的思想非常简单，在一个时间区间内做平均可以明显降低这段时间内的信号波动，使得这段时间内的离散信号更加平缓，连续。具体计算方法如下式子：
+	\begin{align}
+	x_n = \frac{1}{2n + 1} \sum_{i=-n}^{i=n}y_{i+1}
+	\end{align}
+	
+	\subsection{线性动力系统方法}
+	由于滑动平滑平均方法需要选定一个长度作为求平均值的时间窗口的长度，所以对于远小于这个时间窗口的情绪波动效果一般没，而EEG信号的噪声譬如肌电噪声往往是很短时间内的波动。为了解决这个问题，我们找到了另一种特征平滑方法，线性动力系统(LDS)。LDS最大的优势在于它使用了概率模型预测了加权结果。
+	
+	假设原始EEG信号的离散序列为${z_1, z_2, …, y_n}$, 而情绪相关的脑电信号的离散序列是${x_1, x_2, …, x_n}$。我们假设后者开始总是服从正态分布:
+	\begin{align}
+	p(x_1) = \mathcal{N}(w|0, \sigma)
+	\end{align}
+	那么可以根据下式得到x和y，A为状态转移矩阵，C为观测矩阵，f,g,h均为服从正态分布的噪声:
+	\begin{align*}
+	x_n = Ax_{n-1} + w_n \\
+	y_n = Cx_N + v_n\\
+	x_1 = w_0 + u\\
+	f = \mathcal{N}(f|0, \Gamma)\\
+	g = \mathcal{N}{g|0, \Lambda}\\
+	h = \mathcal{N}{h|0, \Sigma}\\
+	\end{align*}
+	
+	那么可以得到下式作为x和y的正态分布的函数：
+	\begin{align}
+	p(x_n|x_{n-1}) = \mathcal{N}(x_n|Ax_{n-1}, \Gamma)\\
+	p(y_n|x_n) = \mathcal{N}(Cx_n, \Lambda)
+	\end{align}
+	
+	在已经知道${y_1, y_2, …, y_n}$的情况下，为了得到离散序列$x_n$,我们可以通过后验概率来计算：
+	\begin{align}
+	p(x_n|y_1, y_2, …, y_n) = \mathcal{N}(x_n|\mu_n, V_n)
+	\end{align}
+	正态分布的参数$\mu_n, V_n$可以通过下式迭代计算得到：
+	\begin{align}
+	P_{n-1} = AV_{n-1}A^T + \Gamma\\
+	\mu_n = A\mu_n + K_n(y_n - CA\mu_{n-1})\\
+	V_n = (1 - K_nC)P_{n-1}
+	K_n = P_{n-1}C^T(CP_{n-1}C^T + \Sigma)^{-1}
+	\end{align}
+	此时，初始条件为:
+	\begin{align}
+	\mu_1 = K_1(y_1 - C\mu_0)\\
+	V_1 = (I - K_1C)V_0\\
+	K_1 = V_0C^T(CV_0C^T+\Sigma) ^ {-1}
+	\end{align}
+	
+	为了完成LDS算法，我们需要以下参数集合:${A, C, \Gamma, \Sigma, V_0}$, 接下来利用EM(Expectation-Maximization)算法进行不断迭代最终求出LDS算法的最终解。
+	\section{本章小结}
+	本章介绍了如何将包含噪声的EEG原始信号去除噪声和伪迹，提取脑电特征，对特征进行平滑的两种方法等。最终提取出了适用于深度学习的EEG特征。
 	
