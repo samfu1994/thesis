@@ -18,7 +18,18 @@
 	所以，本课题的目标在于把眼动轨迹和EEG信号进行融合，找到合适且快速的融合方法，从而利用多模态的信息来进行情绪识别，这样就可以利用眼动轨迹和EEG信号所能提供的互补信息来获得比只是利用单一模态信息更好的表现。
 	
 \section{国内外研究现状}
-	 N Srivastava［1］利用多模态Deep Boltzmann Machines(DBM),作为模型，对图像和文字进行了多模态深度学习。获得了比深度自编码器和多模态DBN更好的结果。 利用多模态DBM学习得共同特征作为输入也在单模态学习中超过了原始的文字模态作为输入。	Ngiam et al. [2] 用深度自编码器进行了语音和视频的多模态深度学习。他们分别利用了只有声音一个模态和声音和视频两个模态作为输入，利用RBM重建声音和视频两个模态的特征并寻找共同表达。最终结论为，用声音一个模态作为输入，而两个RBM分别重建声音和视频的特征寻找到的共同特征表达有最好的结果。	Xing et al. [3] 用dual-wing harmoniums的模型进行了文字和图像的多模态深度学习，他们使用了包含高斯隐含单元，高斯和泊松可见单元的线性RBM模型，最终结果明显好Gaussian-multinomial mixture 和 Gaussian-multinomial mixture LDA.
+
+	Hinton[1]在2006年发表的文章，首次提出了逐层的无监督训练深度新年网络的方法，是近些年深度学习越来越受到研究者关注的开端。
+	
+	在图像处理领域，Alex K.[2 http://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks]于2012年在NIPS发表的文章训练了深度卷积神经网络，将一百三十万张图片分类成为超过1000种类别。整个神经网络有超过6000万个参数和五十万个神经元，最终用softmax函数进行分类任务。达到了非常好的效果。
+	
+	在自然语言处理领域，Socher R.[3 Semi-Supervised Recursive Autoencoders for Predicting Sentiment Distributions]于2011年在EMNLP发表的文章使用半监督递归自编码器，以短语为单元，进行了情绪识别和分布预测，取得了比之前的技术更好的效果。
+	
+	Ngiam et al. [4] 用深度自编码器进行了语音和视频的多模态深度学习。他们分别利用了只有声音一个模态和声音和视频两个模态作为输入，利用RBM重建声音和视频两个模态的特征并寻找共同表达。最终结论为，用声音一个模态作为输入，而两个RBM分别重建声音和视频的特征寻找到的共同特征表达有最好的结果。
+	
+	 N Srivastava［5］利用多模态Deep Boltzmann Machines(DBM),作为模型，对图像和文字进行了多模态深度学习。获得了比深度自编码器和多模态DBN更好的结果。 利用多模态DBM学习得共同特征作为输入也在单模态学习中超过了原始的文字模态作为输入。
+	 
+	Xing et al. [6] 用dual-wing harmoniums的模型进行了文字和图像的多模态深度学习，他们使用了包含高斯隐含单元，高斯和泊松可见单元的线性RBM模型，最终结果明显好Gaussian-multinomial mixture 和 Gaussian-multinomial mixture LDA.
 	 
 	 
 \section{工作介绍}
