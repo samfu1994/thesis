@@ -1,16 +1,65 @@
 \begin{bigabstract}
 
-An imperial edict issued in 1896 by Emperor Guangxu, established Nanyang Public School in Shanghai. The normal school, school of foreign studies, middle school and a high school were established. Sheng Xuanhuai, the person responsible for proposing the idea to the emperor, became the first president and is regarded as the founder of the university.
+Emotion plays an important part in the daily life of everyone. Though we could recognize emotions from facial expressions, voice or body movement, with the development of technology and equipment which could collect signals direct from human brains, we are able to recognize emotions with the help of EEG signals. Compared with the original method, EEG signals have a rather direct connection with emotions. Therefore, EEG-based emotion recognition is now the state-of-the-art research area which got the attention of lots of researchers. However, the performance and accuracy are limited if we can access only the single EEG modal.  Now we try to make use of not only the EEG data but the eye motion data, we believe these two data sources can complement each other and thus we can have a better result if we create an algorithm to use them simultaneously. As a result, our algorithm is based on multimodal deep autoencoder, which will be explained below:
 
-During the 1930s, the university gained a reputation of nurturing top engineers. After the foundation of People's Republic, some faculties were transferred to other universities. A significant amount of its faculty were sent in 1956, by the national government, to Xi'an to help build up Xi'an Jiao Tong University in western China. Afterwards, the school was officially renamed Shanghai Jiao Tong University.
+	A deep autoencoder is composed of two, symmetrical deep-belief networks that typically have four or five shallow layers representing the encoding half of the net, and second set of four or five layers that make up the decoding half.
 
-Since the reform and opening up policy in China, SJTU has taken the lead in management reform of institutions for higher education, regaining its vigor and vitality with an unprecedented momentum of growth. SJTU includes five beautiful campuses, Xuhui, Minhang, Luwan Qibao, and Fahua, taking up an area of about 3,225,833 m2. A number of disciplines have been advancing towards the top echelon internationally, and a batch of burgeoning branches of learning have taken an important position domestically.
+	The layers are restricted Boltzmann machines, the building blocks of deep-belief networks, with several peculiarities that we’ll discuss below. Here’s a simplified schema of a deep autoencoder’s structure, which will be  explained below. a deep autoencoder would use binary transformations after each RBM. Deep autoencoders can also be used for other types of datasets with real-valued data, on which you would use Gaussian rectified transformations for the RBMs instead.
 
-Today SJTU has 31 schools (departments), 63 undergraduate programs, 250 masters-degree programs, 203 Ph.D. programs, 28 post-doctorate programs, and 11 state key laboratories and national engineering research centers.
+	For the encoding process, If, say, the input fed to the network is 784 pixels, then the first layer of the deep autoencoder should have 1000 parameters; i.e. slightly larger.
+This may seem counterintuitive, because having more parameters than input is a good way to overfit a neural network.
 
-SJTU boasts a large number of famous scientists and professors, including 35 academics of the Academy of Sciences and Academy of Engineering, 95 accredited professors and chair professors of the "Cheung Kong Scholars Program" and more than 2,000 professors and associate professors.
+	In this case, expanding the parameters, and in a sense expanding the features of the input itself, will make the eventual decoding of the autoencoded data possible.
+This is due to the representational capacity of sigmoid-belief units, a form of transformation used with each layer. Sigmoid belief units can’t represent as much as information and variance as real-valued data. The expanded first layer is a way of compensating for that.
 
-Its total enrollment of students amounts to 35,929, of which 1,564 are international students. There are 16,802 undergraduates, and 17,563 masters and Ph.D. candidates. After more than a century of operation, Jiao Tong University has inherited the old tradition of "high starting points, solid foundation, strict requirements and extensive practice." Students from SJTU have won top prizes in various competitions, including ACM International Collegiate Programming Contest, International Mathematical Contest in Modeling and Electronics Design Contests. Famous alumni include Jiang Zemin, Lu Dingyi, Ding Guangen, Wang Daohan, Qian Xuesen, Wu Wenjun, Zou Taofen, Mao Yisheng, Cai Er, Huang Yanpei, Shao Lizi, Wang An and many more. More than 200 of the academics of the Chinese Academy of Sciences and Chinese Academy of Engineering are alumni of Jiao Tong University.
+	The layers will be 1000, 500, 250, 100 nodes wide, respectively, until the end, where the net produces a vector 30 numbers long. This 30-number vector is the last layer of the first half of the deep autoencoder, the pretraining half, and it is the product of a normal RBM, rather than an classification output layer such as Softmax or logistic regression, as you would normally see at the end of a deep-belief network.
+For the decoding process, those 30 numbers are an encoded version of the original input data. The second half of a deep autoencoder actually learns how to decode the condensed vector, which becomes the input as it makes its way back.
+
+	The decoding half of a deep autoencoder is a feed-forward net with layers 100, 250, 500 and 1000 nodes wide, respectively. Those layers initially have the same weights as their counterparts in the pretraining net, except that the weights are transposed; i.e. they are not initialized randomly.).
+
+	The decoding half of a deep autoencoder is the part that learns to reconstruct the image. It does so with a second feed-forward net which also conducts back propagation. The back propagation happens through reconstruction entropy.
+
+Deep autoencoder can be used in many cases, as lisited below:
+\begin{itemize}
+\item Image search
+
+	deep autoencoders are capable of compressing images into 30-number vectors. Image search, therefore, becomes a matter of uploading an image, which the search engine will then compress to 30 numbers, and compare that vector to all the others in its index.Vectors containing similar numbers will be returned for the search query, and translated into their matching image.
+\item Data compression
+
+	A more general case of image compression is data compression. Deep autoencoders are useful for semantic hashing, as discussed in this paper by Geoff Hinton
+\item .Topic modeling and information retrieval 
+
+	Deep autoencoders are useful in topic modeling, or statistically modeling abstract topics that are distributed across a collection of documents.
+
+	In brief, each document in a collection is converted to a Bag-of-Words (i.e. a set of word counts) and those word counts are scaled to decimals between 0 and 1, which may be thought of as the probability of a word occurring in the doc.
+	
+	The scaled word counts are then fed into a deep-belief network, a stack of restricted Boltzmann machines, which themselves are just a subset of feedforward-backprop autoencoders. Those deep-belief networks, or DBNs, compress each document to a set of 10 numbers through a series of sigmoid transforms that map it onto the feature space.
+	
+	Each document’s number set, or vector, is then introduced to the same vector space, and its distance from every other document-vector measured. Roughly speaking, nearby document-vectors fall under the same topic.
+	
+	For example, one document could be the “question” and others could be the “answers,” a match the software would make using vector-space measurements.
+\end{itemize}
+
+	Deep networks have already been successfully applied to unsupervised feature learning for single modalities such as text, images or audio. In this work, we propose a novel application of deep networks to learn features over EEG data and eye motion data. We present multiple algorithm and a series of tasks for multimodal learning and illustrate how to train deep networks that learn features to solve these tasks. In particular, we demonstrate cross modality feature learning, where better features for one modality such as EEG data can be learned if multiple modalities such as EEG data and eye motion data are present at feature learning time. 
+
+	This work focus on the emotion recognition tasks based on the EEG data, to improve the current result of our emotion recognition research, we have applied the multimodal deep learning algorithm containing deep autoencoder to this thesis. With the related multimodal deep learning algorithm created by the researchers, we have tried different activation function and extract feature from different layers. It turned out to be that the rectified linear unit has a better performance than sigmoid function unit while feature from different layer also differs from each other.
+
+	Concretely, 
+
+	However, we see that we are a long way to go before we can make this algorithm really brilliant, so that it can have advantages in both speed and accuracy. So far, what we can see to be done in the future are listed below:
+\begin{enumerate}
+\item As we tried many libraries before we found this suitable one, we spent a lot of time on it so that we have not enough time to tune the parameters including the number of the hidden units, the learning rate or the core function of our SVM classifier. We believe the result can get better if there is more time for tuning.
+\item Our lab usually list the results of five bands(Alpha, Beta, Gamma and so on) and the result of the combination of all five bands respectively for comparison. However, as we don’t have enough time for this work, we just present and analyze the result of the combination of all five bands. We can analyze the five bands respectively to find the best band for this deep autoencoder algorithm.
+\item Now the final result represents for the output of multimodal deep autoencoder, and we use this result to compare with the feature that has not been learned or trained by any network, and it is not fair.  In the future, we need to use this algorithm to extract the feature of only EEG data and eye motion data respectively, then use the results to compare with the result of multimodal autoencoder to illustrate the difference between multi-modal and single-modal. Also we need to concatenate the feature of two modals and compare with the result of our algorithm to illustrate the importance of the deep network. Use the method of controlled variable, we can state the advantages of our algorithm clearly.
+\item To show that the feature we learned is useful intuitively, we can cluster the learned feature and original feature using K-means cluster algorithm and see the result of the cluster algorithm.
+\item Now we just use SVM to classify the feature we learned, we can try different classifier in the future such as multiple perceptron.
+\item We can try shared representation task, in which we will use data of one modal to train and data of another modal to test. In this case, the classification can work because the classifier has learned the shared representation of these two modal.
+\end{enumerate}
+
+	Finally, the result we get is compatible with the one we anticipated, naturally they are both better than the baseline algorithm. Moreover, after testing so many times, the library we use for the work has a decent speed and can help with the future work.
+
+Furthermore, we expect to show how to learn a shared representation between modalities and evaluate it on a unique task in the future, where the classifier is trained with audio-only data but tested with video-only data and vice-versa. 
+
 
 %\englishkeywords{\large SJTU, master thesis, XeTeX/LaTeX template}
 \end{bigabstract}
