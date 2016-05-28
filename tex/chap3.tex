@@ -129,7 +129,7 @@
 	K_1 = V_0C^T(CV_0C^T+\Sigma) ^ {-1}
 	\end{align}
 	
-	为了完成LDS算法，我们需要以下参数集合:${A, C, \Gamma, \Sigma, V_0}$, 接下来利用EM(Expectation-Maximization)算法进行不断迭代最终求出LDS算法的最终解。
+	为了完成LDS算法，我们需要以下参数集合:${A, C, \Gamma, \Sigma, V_0}$, 接下来利用EM(Expectation-Maximization)算法\upcite{Dempster77maximumlikelihood}进行不断迭代最终求出LDS算法的最终解。
 	\section{本章小结}
 	本章介绍了如何将包含噪声的EEG原始信号去除噪声和伪迹，提取脑电特征，对特征进行平滑的两种方法等。最终提取出了适用于深度学习的EEG特征。
 	
