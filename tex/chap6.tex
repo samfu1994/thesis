@@ -37,7 +37,7 @@
 	\end{itemize}
 }
 \subsection{深度信念网络(Deep Belief Networks), DBN}{
-	  深度信念网络\upcite{NIPS2007_3363}是一个生成的概率模型，与传统的神经网络的判别模型相对，生成的模型是建立一个观察到的数据和标签(label)之间的联合分布，对$P(Observation|Label)$和 $P(Label|Observation)$都做出了估计，而判别模型只需要评估后者，也就是$P(Label|Observation)$。自然的，研究者一开始对于深度信念网络也使用了传统的反向传播算法，对于在深度神经网络应用传统的反向传播算法的时候，深度信念网络遇到了很多问题，譬如：
+	  深度信念网络\upcite{NIPS2007_3363}是一个生成的概率模型，与传统的神经网络的判别模型相对，生成的模型是建立一个观察到的数据和标签(label)之间的联合分布，对$P(Observation|Label)$和 $P(Label|Observation)$都做出了估计，而判别模型只需要评估后者，\\ 也就是$P(Label|Observation)$。自然的，研究者一开始对于深度信念网络也使用了传统的反向传播算法，对于在深度神经网络应用传统的反向传播算法的时候，深度信念网络遇到了很多问题，譬如：
 	  \begin{itemize}
 	  	\item 训练集合需要有标签，否则无法进行反向传播算法来学习整个网络。
 		\item 因为网络很深，迭代一次需要计算非常多层数的参数，包括求梯度，所以过程比较缓慢。
@@ -90,7 +90,7 @@
 	如果要进行深度学习的研究，那么必须要理解RBM的相关背景。\\
 	\par
 	\centerline{\includegraphics[width=2.5in]{figure/rbm.png}} %要居中就用centerline,这里的图片和tex 文件在一个目录下
-	\centerline{图6-1}
+	\centerline{图6-1 RBM模型}
 
 	这是RBM的基本模型，其中v代表显层, h代表隐层。每个RBM都由一个显层和一个隐层组成，显层和隐层都可以有大于等于一的任意多个维度。而显层之间的所有单元均不相连，隐层之间的所有单元也全不相连。而两层之间的单元全相连。值得一提的是，如果所有单元保持全相连，那么这个模型就是波尔兹曼机(Boltzmann Machine)，由于计算复杂度等原因，深度学习研究者通常使用RBM来构建深度网络。
 	RBM是一个基于能量的模型(Energy-Based model),众所周知，一个基于能量的概率模型的概率分布由它独有的能量函数定义。对于常用的伯努利RBM来说，它的能量函数如下：
@@ -135,15 +135,15 @@
 	
 	initialize $x_i$ : i = 1, 2, …, n, T samples:
 	
-	for t in range(1, T):\\
-	\begin{equation}
-		x_1^{(t+1)} \sim p(x_1 | x_2^t, x_3^t,…, x_n^t)\\
-		x_2^{(t+1)} \sim p(x_2 | x_1^({t+1)}, x_3^t,…, x_n^t)\\
-		……\\
-		x_j^{(t+1)} \sim p(x_j | x_1^{(t+1)},…,x_{(j-1)}^{(t+1)},x_{(j+1)}^t,…, x_n^t)\\
-		……\\
-		x_n^{(t+1)} \sim p(x_n | x_1^{t+1}, x_2^{t+1},…, x_{(n-1)}^{t+1})\\
-	\end{equation}
+	for t in range(1, T):
+	\begin{flalign}
+		\qquad \qquad &x_1^{(t+1)} \sim p(x_1 | x_2^t, x_3^t,…, x_n^t)&\\
+		&x_2^{(t+1)} \sim p(x_2 | x_1^({t+1)}, x_3^t,…, x_n^t)&\\
+		&……&\\
+		&x_j^{(t+1)} \sim p(x_j | x_1^{(t+1)},…,x_{(j-1)}^{(t+1)},x_{(j+1)}^t,…, x_n^t)&\\
+		&……&\\
+		&x_n^{(t+1)} \sim p(x_n | x_1^{t+1}, x_2^{t+1},…, x_{(n-1)}^{t+1})&
+	\end{flalign}
 	
 	利用高斯RBM我们取得了比伯努利RBM更好的结果。
 		
@@ -152,10 +152,10 @@
 	CD算法由G. Hinton提出\upcite{hinton06}，用于求极大似然问题(Maximum-Likelihood)的近似解。它的基本思想是，我们想要得到P(v)分布的样本，而我们已有了训练样本，可以假设训练样本自然就是服从分布P(v)的。因此，我们的上述算法第一步初始化过程就不再是随机初始化，而是从任意一个训练样本开始。
 	
 	因此，CD算法的具体步骤是：从样本集合也就是训练集合任意一个样本$v^0$开始，经过k次吉布斯采样。即对于第t步采样，具体算法如下：
-	\begin{equation}
-	h^{t-1} \sim P(h|v^{t-1})
-	v^t \sim P(v|h^{t-1})
-	\end{equation}
+	\begin{flalign}
+	\qquad \qquad \qquad \qquad \qquad &h^{t-1} \sim P(h|v^{t-1})&\\
+	&v^t \sim P(v|h^{t-1})&
+	\end{flalign}
 	不断迭代我们就得到了样本$v^k$。有了采样出来的$v^k$,我们把它认为是近似的期望，所以就可以计算出梯度的近似值，并且根据其进行RBM的更新了。
 	值得注意的是，在实际应用中，往往t等于1，也就是只采样一次就够了，这也就是为什么CD算法会远远快于吉布斯采样算法。
 	CD算法的伪代码请见算法6-1。\\ \\
@@ -204,7 +204,7 @@
 		
 	\subsection{模型I}
 		\centerline{\includegraphics[width=4in]{figure/model1.png}} 
-		\centerline{图6-2}
+		\centerline{图6-2 算法模型I}
 	
 	如图所示，这个算法模型的功能是接受两个模态的输入，提取出两个模态的共同特征表达并输出。它的输出可以放到其他分类器，譬如SVM，神经网络等。这是一种比较直观，简单易懂的方法。那就是首先把眼动仪数据(图中eye)和脑电数据(图中eeg)直接进行拼接。设眼动仪数据每个样本有n维，而脑电数据每个样本有m维，那么此时把它们拼接，得到(m + n)维的向量作为每个样本的特征。然后利用预训练之后的RBM进行特征提取，就得到了脑电数据和眼动仪数据的共同特征表达。
 	
@@ -213,13 +213,13 @@
 	为了解决这个问题，只能构建更深层次的网络。	
 	\subsection{模型II}
 		\centerline{\includegraphics[width=5in]{figure/classify1.png}}
-		\centerline{图6-3}
+		\centerline{图6-3 算法模型II}
 		如上图所示，此算法模型的功能与模型I类似，只是更加复杂，它可以更好的学习到两个模态的数据之间的非线性关系。首先用两个RBM分别提取眼动仪模态和脑电模态的特征，然后再将提取后的特征拼接，并再加一层网络提取共同表达的特征。这个网络一共包含三个RBM，在经过预训练和调参之后，我们获得了比模型I更好的结果。
 		
 		值得一提的是，模型I与模型II中每个RBM我们尝试了伯努利RBM和高斯RBM，然而在后续工作中我们发现在每个RBM的每个元素中都使用修正线性单元(Rectified Linear Unit，简写为ReLu)替代了sigmoid unit之后，因此这个问题也就无需再考虑，因为不论是从速度还是结果来看，前者都是更优秀的。下文中将对这两个激活函数进行更详尽的对比。
 	\subsection{模型III}
 		\centerline{\includegraphics[width=7in]{figure/feature_learning.png}}
-		\centerline{图6-4}
+		\centerline{图6-4 特征学习模型}
 		
 		如上图，这就是本文构建的特征提取算法模型。与前两个模型一样，它也接受两个模态的输入，并输出共同特征表达，用于后续的情绪识别任务。
 		
@@ -227,12 +227,12 @@
 		
 		然而，不像图像识别任务一样，深度网络的每个层次的特征都代表明确的意义，譬如浅层可能是直线和曲线，深层就是复杂的轮廓。趋势是越浅层的越局部越简单，越深层的越广泛越复杂。脑电和眼电数据的深度学习网络里也有相似的道理。为了找出哪个层次的共同特征表达最适用于我们的情绪分类任务，我把从第一层到第n层的共同特征全部提取出来，并进行试验，得到了最终的结果。示意图见下方：
 		\centerline{\includegraphics[width=5in]{figure/classifyk.png}}
-		\centerline{图6-5}
+		\centerline{图6-5 提取在编码阶段的第k层的特征}
 		\centerline{\includegraphics[width=5in]{figure/classifyn.png}}
-		\centerline{图6-6}
+		\centerline{图6-6 提取在编码阶段的第m层的特征，m为编码阶段最后一层}
 		
 		\centerline{\includegraphics[width=5in]{figure/classify_all.png}}
-		\centerline{图6-7}
+		\centerline{图6-7 提取所有编码阶段的层次的特征}
 		
 	\subsection{激励函数的改进}
 		

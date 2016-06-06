@@ -17,14 +17,14 @@
 	
 	为了对比，我们将首先介绍原始数据的表现。如果我们直接将原始的微分熵特征输入到上述支持向量机进行分类，那么结果如下，以下结果均是所有文件平均的结果：
 
-	\begin{table}[!hbp]
+	\begin{table}[!h]
 	\centering
 \begin{tabular}{|c|c|c|c|c|}
 \hline
 \hline
   & only EEG & only EYE & EEG\&EYE \\
 \hline
-准确率(\%) & 75.26 & 54.03 & 68.91\\
+准确率(\%) & 75.26 & 54.03 & 78.91\\
 \hline
 标准差(\%) & 3.07 & 3.21 & 3.19 \\
 \hline
@@ -34,9 +34,39 @@
 
 \section{不同深度的特征结果分析}
 
-	正如理论分析时所说，虽然脑电不像图像一样，每一层都可以有比较明确的意义，即深度由浅入深，则特征由具体到抽象。但是我们仍旧可以假设脑电也具有类似的规律，并设计出了上述算法进行试验，实验结果如下。
-	
-	\begin{table}[!hbp]
+	正如理论分析时所说，虽然脑电不像图像一样，每一层都可以有比较明确的意义，即深度由浅入深，则特征由具体到抽象。但是我们仍旧可以假设脑电也具有类似的规律，并设计出了上述算法进行试验，实验结果如下。\\
+		\begin{table}[!h]
+	\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\hline
+  & 第一层 & 第二层 & 第三层 \\
+\hline
+准确率(\%) & 74.27 & 77.76 & 79.61\\
+\hline
+标准差(\%) & 5.31 & 6.87 & 4.69 \\
+\hline
+\end{tabular}
+\caption{全频段PSD feature, 应用sigmoid函数作为激励函数结果分析}
+\end{table} 
+
+	\begin{table}[!h]
+	\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\hline
+  & 第一层 & 第二层 & 第三层 \\
+\hline
+准确率(\%) & 76.79 & 80.04 & 82.07\\
+\hline
+标准差(\%) & 3.96 & 5.15 & 4.62 \\
+\hline
+\end{tabular}
+\caption{全频段PSD fearture, 应用修正线性单元作为激励函数结果分析}
+\end{table} 
+
+
+	\begin{table}[!h]
 	\centering
 \begin{tabular}{|c|c|c|c|c|}
 \hline
@@ -48,10 +78,10 @@
 标准差(\%) & 4.27 & 3.81 & 3.69 \\
 \hline
 \end{tabular}
-\caption{应用sigmoid函数作为激励函数结果分析}
+\caption{全频段DE feature, 应用sigmoid函数作为激励函数结果分析}
 \end{table} 
 
-	\begin{table}[!hbp]
+	\begin{table}[!h]
 	\centering
 \begin{tabular}{|c|c|c|c|c|}
 \hline
@@ -63,15 +93,247 @@
 标准差(\%) & 3.85 & 4.51 & 3.99 \\
 \hline
 \end{tabular}
-\caption{应用修正线性单元作为激励函数结果分析}
+\caption{全频段DE fearture, 应用修正线性单元作为激励函数结果分析}
 \end{table} 
 
-	由表6-2和表6-3我们可以看出：
+	由表7-2和表7-3我们可以看出：
 	\begin{itemize}
 	\item 由本课题多模态深度学习自编码器算法提出的特征相对于基准模型有更好的表现，这说明我们的算法是有效的。
 	\item 修正线性单元提取出的每一层特征都比sigmoid函数提取出的对应特征有更好的表现，符合理论的预期。
 	\item 并且两个函数提出出的特征按照层数由浅入深表现都越来越好，这说明了随着深度的加深，提取到的特征有更好的性能。
 	\end{itemize}
+	
+\section{不同频段的对比}
+	由于我们按照脑电的生理意义将所有的频率区间分成了5个频段，分别是delta, theta, alpha, beta, gamma，所以本课题对它们分别进行了特征提取，下面分了不同的特征，对不同频段进行了对比。
+
+		\begin{table}[!h]
+	\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\hline
+  & 第一层 & 第二层 & 第三层 \\
+\hline
+准确率(\%) & 66.55 & 64.59 & 71.22\\
+\hline
+标准差(\%) & 8.3 & 10.54 &8.18\\
+\hline
+\end{tabular}
+\caption{alpha频段，PSD feature, sigmoid函数}
+\end{table} 
+
+		\begin{table}[!h]
+	\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\hline
+  & 第一层 & 第二层 & 第三层 \\
+\hline
+准确率(\%) & 77.45 & 78.88 & 79.49\\
+\hline
+标准差(\%) & 9.57 & 9.55 & 9.41 \\
+\hline
+\end{tabular}
+\caption{beta频段，PSD feature, sigmoid函数}
+\end{table} 
+
+		\begin{table}[!h]
+	\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\hline
+  & 第一层 & 第二层 & 第三层 \\
+\hline
+准确率(\%) & 79.38 & 80.39 & 83.28\\
+\hline
+标准差(\%) & 7.31 & 9.43 & 6.32 \\
+\hline
+\end{tabular}
+\caption{gamma频段，PSD feature, sigmoid函数}
+\end{table} 
+
+
+
+		\begin{table}[!h]
+	\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\hline
+  & 第一层 & 第二层 & 第三层 \\
+\hline
+准确率(\%) & 66.78 & 65.52 & 70.32\\
+\hline
+标准差(\%) & 5.86 & 7.0 & 5.85 \\
+\hline
+\end{tabular}
+\caption{alpha频段，PSD feature, relu}
+\end{table} 
+
+		\begin{table}[!h]
+	\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\hline
+  & 第一层 & 第二层 & 第三层 \\
+\hline
+准确率(\%) & 77.58 & 81.83 & 80.66\\
+\hline
+标准差(\%) & 9.27 & 5.79 & 7.3 \\
+\hline
+\end{tabular}
+\caption{beta频段，PSD feature, relu}
+\end{table} 
+
+		\begin{table}[!h]
+	\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\hline
+  & 第一层 & 第二层 & 第三层 \\
+\hline
+准确率(\%) & 81.77 & 80.01 & 85.88 \\
+\hline
+标准差(\%) & 6.77 & 6.98 & 5.36 \\
+\hline
+\end{tabular}
+\caption{gamma频段，PSD feature, relu}
+\end{table} 
+
+		\begin{table}[!h]
+	\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\hline
+  & 第一层 & 第二层 & 第三层 \\
+\hline
+准确率(\%) & 73.02 & 78.37 & 73.84\\
+\hline
+标准差(\%) & 11.22 & 9.36 & 10.27\\
+\hline
+\end{tabular}
+\caption{alpha频段，DE feature, sigmoid函数}
+\end{table} 
+
+		\begin{table}[!h]
+	\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\hline
+  & 第一层 & 第二层 & 第三层 \\
+\hline
+准确率(\%) & 79.33 & 82.89 &83.55\\
+\hline
+标准差(\%) & 8.48 & 6.52 & 7.82 \\
+\hline
+\end{tabular}
+\caption{beta频段，DE feature, sigmoid函数}
+\end{table} 
+
+		\begin{table}[!h]
+	\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\hline
+  & 第一层 & 第二层 & 第三层 \\
+\hline
+准确率(\%) & 82.63 & 84.21 & 84.48\\
+\hline
+标准差(\%) & 6.77 & 4.73 & 5.38 \\
+\hline
+\end{tabular}
+\caption{gamma频段，DE feature,sigmoid函数}
+\end{table} 
+
+
+
+
+		\begin{table}[!h]
+	\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\hline
+  & 第一层 & 第二层 & 第三层 \\
+\hline
+准确率(\%) & 73.66 & 62.41 & 76.19\\
+\hline
+标准差(\%) & 8.21 & 10.29 & 7.85 \\
+\hline
+\end{tabular}
+\caption{alpha频段，DE feature, relu}
+\end{table} 
+
+		\begin{table}[!h]
+	\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\hline
+  & 第一层 & 第二层 & 第三层 \\
+\hline
+准确率(\%) & 81.35 & 85.00 & 86.33\\
+\hline
+标准差(\%) & 8.76 & 5.99 & 7.82 \\
+\hline
+\end{tabular}
+\caption{beta频段，DE feature, relu}
+\end{table} 
+
+		\begin{table}[!h]
+	\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\hline
+  & 第一层 & 第二层 & 第三层 \\
+\hline
+准确率(\%) &83.68 & 80.91 &86.43\\
+\hline
+标准差(\%) & 6.93 & 7.59 & 5.25 \\
+\hline
+\end{tabular}
+\caption{gamma频段，DE feature, relu}
+\end{table} 
+
+		\begin{table}[!h]
+	\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\hline
+ 准确率(\%) & alpha频段 & beta频段 & gamma频段\\
+\hline
+第一层 & 66.79	& 77.58 & \textbf{81.78}\\
+\hline
+第二层 & 65.52	& \textbf{81.84} & 80.01 \\
+\hline
+第三层 & 70.32 & 80.66 & \textbf{85.89}\\
+\hline
+\end{tabular}
+\caption{不同频段对比，PSD feature, relu}
+\end{table} 
+
+
+		\begin{table}[!h]
+	\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\hline
+ 准确率(\%) & alpha频段 & beta频段 & gamma频段\\
+\hline
+第一层 & 73.66	& 81.35 & \textbf{83.68}\\
+\hline
+第二层 & 62.41	& \textbf{85.00} & 80.91 \\
+\hline
+第三层 & 76.19	& 86.33 & \textbf{86.43}\\
+\hline
+\end{tabular}
+\caption{不同频段对比，DE feature, relu}
+\end{table} 
+
+\section{结果分析}
+	通过对比，我们可以看出：
+	\begin{enumerate}
+	\item 在PSD特征和DE特征的对比之下，无论是不同层次，不同频段的平均值还是最高值，DE特征都有更好的表现。
+	\item 在alpha，beta，gamma三个频段对比之下，gamma有更好的表现，beta次之，alpha的表现相对催差。
+	\item 在不同深度特征的对比之下，我们发现深度越深，特征的表现就越让人满意。但是不同层次的特征的最优值不出现在同一频段，从表中我们可以看出，第一层和第三层的最优值都出现在gamma频段而第二层的最优值出现在beta频段。由于现在网络只有三层，所以还需后续继续跟进研究，进行进一步测试。
+	\item 在sigmoid和relu两种激励函数的对比之下，relu有更好的表现，总体提升2\%到3\%。
+	\end{enumerate}
 	\section{本章小结}
 	虽然我们课题有了一定的收获和结论，但是还远远不足，一个显然的不足之处就是：我们的课题不但要说明多模态于单模态的意义，还要说明深度自编码器于原始输入特征的意义。而如果要通过对比显示多模态于单模态的意义，我们应该对单纯的脑电和眼电分别加上这个算法，用深度自编码器对单模态特征进行特征提取，再对比结果，这样一来改变的只是由单模态到多模态。 而直接把多模态特征拼接，对比我们的多模态深度算法得到的结果，显示的是深度自编码器网络的意义。通过这样的控制变量的方法，我们能进一步说明多模态的意义。
 
